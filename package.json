@@ -2,7 +2,7 @@
     "name": "duranium-launcher",
     "preductname": "Duranium Launcher",
     "version": "1.0.0",
-    "description": "Launcher du serveur Duranium",
+    "description": "Launcher du serveur Duranium.",
     "main": "src/app.js",
     "author": "_Rig_",
     "url": "https://launcher.duranium.fr",
