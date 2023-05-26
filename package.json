@@ -1,11 +1,11 @@
 {
-    "name": "Selvania-Launcher",
-    "preductname": "Selvania Launcher",
-    "version": "1.2.6",
+    "name": "duranium-launcher",
+    "preductname": "Duranium Launcher",
+    "version": "1.0.0",
     "description": "Launcher Mincraft custom (crack, premium)",
     "main": "src/app.js",
-    "author": "Luuxis",
-    "url": "http://craftdium.ml/launcherSelvania",
+    "author": "_Rig_",
+    "url": "https://duranium.fr/launcher",
     "engines": {
         "node": "^18.x.x"
     },
@@ -32,6 +32,6 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/luuxis/Selvania-Launcher.git"
+        "url": "git+hhttps://github.com/pgarig/Duranium-Launcher.git"
     }
 }
