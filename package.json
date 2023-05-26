@@ -2,10 +2,10 @@
     "name": "duranium-launcher",
     "preductname": "Duranium Launcher",
     "version": "1.0.0",
-    "description": "Launcher Mincraft custom (crack, premium)",
+    "description": "Launcher du serveur Duranium",
     "main": "src/app.js",
     "author": "_Rig_",
-    "url": "https://duranium.fr/launcher",
+    "url": "https://launcher.duranium.fr",
     "engines": {
         "node": "^18.x.x"
     },
