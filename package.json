@@ -1,7 +1,7 @@
 {
     "name": "duranium-launcher",
     "preductname": "Duranium Launcher",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "Launcher du serveur Duranium.",
     "main": "src/app.js",
     "author": "_Rig_",

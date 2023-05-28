@@ -142,11 +142,11 @@ class Home {
             let opts = {
                 url: this.config.game_url === "" || this.config.game_url === undefined ? `${urlpkg}/files/` : this.config.game_url,
                 authenticator: account,
-                timeout: 60000,
+                timeout: 10000,
                 path: `${dataDirectory}/${process.platform == 'darwin' ? this.config.dataDirectory : `.${this.config.dataDirectory}`}`,
                 version: this.config.game_version,
                 detached: launcherSettings.launcher.close === 'close-all' ? false : true,
-                downloadFileMultiple: 10,
+                downloadFileMultiple: 30,
 
                 loader: {
                     type: this.config.loader.type,
