@@ -22,7 +22,7 @@
         "axios": "^1.4.0",
         "electron-download": "^4.1.1",
         "electron-updater": "^5.0.1",
-        "minecraft-java-core": "^3.4.3",
+        "minecraft-java-core": "^3.4.4",
         "node-fetch": "^2.6.7"
     },
     "devDependencies": {
