@@ -49,7 +49,6 @@ class Splash {
     }
 
     async checkUpdate() {
-        return this.startLauncher();
         if (dev) return this.startLauncher();
         this.setStatus(`recherche de mise à jour...`);
 
