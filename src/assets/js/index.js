@@ -21,10 +21,17 @@ class Splash {
     }
 
     async startAnimation() {
-        let splashes = [
-            { "message": "« Putain de creeper »", "author": "Rig" },
-            { "message": "« Tu fais chier »", "author": "Rig" },
-        ]
+        let splashes;
+        try{
+        const axios = require('axios');
+        const res = await axios.get('https://launcher.duranium.fr/launcher/config-launcher/splashes.json');
+        splashes = res.data;
+        } catch (error) {
+            splashes = [
+                { "message": "« Putain de creeper »", "author": "_Rig_" },
+                { "message": "« Tu fais chier »", "author": "Legreza" }
+            ]
+        }
         let splash = splashes[Math.floor(Math.random() * splashes.length)];
         this.splashMessage.textContent = splash.message;
         this.splashAuthor.children[0].textContent = "@" + splash.author;
@@ -37,7 +44,7 @@ class Splash {
         this.splashMessage.classList.add("opacity");
         this.splashAuthor.classList.add("opacity");
         this.message.classList.add("opacity");
-        await sleep(1000);
+        await sleep(2500);
         this.checkUpdate();
     }
 

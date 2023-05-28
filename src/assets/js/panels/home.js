@@ -11,6 +11,10 @@ const { Launch, Status } = require('minecraft-java-core');
 const { ipcRenderer } = require('electron');
 const launch = new Launch();
 const pkg = require('../package.json');
+const axios = require('axios');
+const os = require('os');
+const fs = require('fs');
+const path = require('path');
 
 const dataDirectory = process.env.APPDATA || (process.platform == 'darwin' ? `${process.env.HOME}/Library/Application Support` : process.env.HOME)
 
@@ -22,7 +26,7 @@ class Home {
         this.database = await new database().init();
         this.initNews();
         this.initLaunch();
-        //this.initStatusServer();
+        this.initStatusServer();
         this.initBtn();
     }
 
@@ -84,9 +88,36 @@ class Home {
                 </div>`
             // news.appendChild(blockNews);
         }
+
     }
 
     async initLaunch() {
+
+
+        /*try {
+            console.log('Delete files') 
+            let modsDirectory;
+            if (os.platform() === 'win32') {
+                console.log('windows');
+                modsDirectory = path.join(process.env.APPDATA, '.duranium', 'mods');
+            } else if (os.platform() === 'darwin') {
+                console.log('mac');
+                modsDirectory = path.join(os.homedir(), 'Library', 'Application Support', 'duranium', 'mods');
+            } else {
+                console.log('linux');
+                modsDirectory = path.join(os.homedir(), '.config', 'duranium', 'mods');
+            }
+            console.log(modsDirectory)
+            const existingFiles = fs.readdirSync(modsDirectory);
+            existingFiles.forEach(file => {
+            const filePath = path.join(modsDirectory, file);
+                fs.unlinkSync(filePath);
+                console.log(`Fichier supprimé : ${filePath}`);
+            });
+        } catch (error) {
+            console.error('Une erreur s\'est produite :', error);
+        }*/
+
         document.querySelector('.play-btn').addEventListener('click', async () => {
             let urlpkg = pkg.user ? `${pkg.url}/${pkg.user}` : pkg.url;
             let uuid = (await this.database.get('1234', 'accounts-selected')).value;
@@ -111,11 +142,11 @@ class Home {
             let opts = {
                 url: this.config.game_url === "" || this.config.game_url === undefined ? `${urlpkg}/files/` : this.config.game_url,
                 authenticator: account,
-                timeout: 30000,
+                timeout: 60000,
                 path: `${dataDirectory}/${process.platform == 'darwin' ? this.config.dataDirectory : `.${this.config.dataDirectory}`}`,
                 version: this.config.game_version,
                 detached: launcherSettings.launcher.close === 'close-all' ? false : true,
-                downloadFileMultiple: 30,
+                downloadFileMultiple: 10,
 
                 loader: {
                     type: this.config.loader.type,
@@ -167,6 +198,35 @@ class Home {
             launch.on('speed', (speed) => {
                 console.log(`${(speed / 1067008).toFixed(2)} Mb/s`)
             })
+            
+            try {
+                console.log('Get files') 
+                const res = await axios.get('https://launcher.duranium.fr/files/index.php');
+                const data = res.data;
+                const modsEntries = data.filter(entry => entry.path && entry.path.startsWith('mods/'));
+                let modsDirectory;
+                if (os.platform() === 'win32') {
+                    console.log('windows');
+                    modsDirectory = path.join(process.env.APPDATA, '.duranium', 'mods');
+                } else if (os.platform() === 'darwin') {
+                    console.log('mac');
+                    modsDirectory = path.join(os.homedir(), 'Library', 'Application Support', 'duranium', 'mods');
+                } else {
+                    console.log('linux');
+                    modsDirectory = path.join(os.homedir(), '.config', 'duranium', 'mods');
+                }
+                console.log(modsDirectory)
+                const existingFiles = fs.readdirSync(modsDirectory);
+                existingFiles.forEach(file => {
+                const filePath = path.join(modsDirectory, file);
+                if (!modsEntries.some(entry => entry.path.endsWith(file))) {
+                    fs.unlinkSync(filePath);
+                    console.log(`Fichier supprimé : ${filePath}`);
+                }
+                });
+            } catch (error) {
+                console.error('Une erreur s\'est produite :', error);
+            }
 
             launch.on('patch', patch => {
                 console.log(patch);
@@ -189,11 +249,10 @@ class Home {
                 playBtn.style.display = "block"
                 info.innerHTML = `Vérification`
                 new logger('Launcher', '#7289da');
-                console.log('Close');
             });
 
             launch.on('error', err => {
-                console.log(err);
+                console.log('Erreur : ' + err);
             });
         })
     }
@@ -203,9 +262,21 @@ class Home {
         let serverMs = document.querySelector('.server-text .desc');
         let playersConnected = document.querySelector('.etat-text .text');
         let online = document.querySelector(".etat-text .online");
-        let serverPing = await new Status(this.config.status.ip, this.config.status.port).getStatus();
+        //let serverPing = await new Status(this.config.status.ip).getStatus();
 
-        if (!serverPing.error) {
+        try {
+            const res = await axios.get('https://api.mcstatus.io/v2/status/java/duranium.fr');
+            const data = res.data;
+            if (data['online'] == true) {
+                serverMs.innerHTML = `<span class="green">En ligne</span>`;
+                online.classList.toggle("off");
+                playersConnected.textContent = data['players']['online'];
+            }
+        } catch (error) {
+            console.error('Une erreur s\'est produite :', error);
+        }
+
+        /*if (!serverPing.error) {
             nameServer.textContent = this.config.status.nameServer;
             serverMs.innerHTML = `<span class="green">En ligne</span> - ${serverPing.ms}ms`;
             online.classList.toggle("off");
@@ -213,7 +284,7 @@ class Home {
         } else if (serverPing.error) {
             nameServer.textContent = 'Serveur indisponible';
             serverMs.innerHTML = `<span class="red">Hors ligne</span>`;
-        }
+        }*/
     }
 
     initBtn() {
