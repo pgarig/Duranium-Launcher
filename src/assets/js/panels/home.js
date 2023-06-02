@@ -94,7 +94,7 @@ class Home {
     async initLaunch() {
 
 
-        try {
+        /*try {
             console.log('Delete files') 
             let modsDirectory;
             if (os.platform() === 'win32') {
@@ -116,7 +116,7 @@ class Home {
             });
         } catch (error) {
             console.error('Une erreur s\'est produite :', error);
-        }
+        }*/
 
         document.querySelector('.play-btn').addEventListener('click', async () => {
             let urlpkg = pkg.user ? `${pkg.url}/${pkg.user}` : pkg.url;
@@ -199,7 +199,7 @@ class Home {
                 console.log(`${(speed / 1067008).toFixed(2)} Mb/s`)
             })
             
-            /*try {
+            try {
                 console.log('Get files') 
                 const res = await axios.get('https://launcher.duranium.fr/files/index.php');
                 const data = res.data;
@@ -226,7 +226,7 @@ class Home {
                 });
             } catch (error) {
                 console.error('Une erreur s\'est produite :', error);
-            }*/
+            }
 
             launch.on('patch', patch => {
                 console.log(patch);
