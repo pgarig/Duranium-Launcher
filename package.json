@@ -1,7 +1,7 @@
 {
     "name": "duranium-launcher",
     "preductname": "Duranium Launcher",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "description": "Launcher du serveur Duranium.",
     "main": "src/app.js",
     "author": "_Rig_",
@@ -27,8 +27,8 @@
     },
     "devDependencies": {
         "cross-env": "^7.0.3",
-        "electron": "^20.0.0",
-        "electron-builder": "^23.0.3",
+        "electron": "^25.1.0",
+        "electron-builder": "^24.4.0",
         "javascript-obfuscator": "^4.0.2",
         "nodemon": "^2.0.16"
     },
